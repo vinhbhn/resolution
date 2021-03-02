@@ -8,7 +8,7 @@ import {
   ResolutionError,
   ResolutionErrorCode,
 } from './index';
-import Contract from './utils/contract';
+import EthereumContract from './contracts/EthereumContract';
 import contentHash from 'content-hash';
 import EnsNetworkMap from 'ethereum-ens-network-map';
 import { Provider, EnsConfig, EnsSupportedNetworks } from './publicTypes';
@@ -36,7 +36,7 @@ export default class Ens implements NamingService {
   readonly url: string | undefined;
   readonly registryAddress: string;
   readonly provider: Provider;
-  readonly readerContract: Contract;
+  readonly readerContract: EthereumContract;
 
   constructor(source?: EnsConfig) {
     if (!source) {
@@ -164,7 +164,7 @@ export default class Ens implements NamingService {
   /**
    * This was done to make automated tests more configurable
    */
-  private resolverCallToName(resolverContract: Contract, nodeHash) {
+  private resolverCallToName(resolverContract: EthereumContract, nodeHash) {
     return this.callMethod(resolverContract, 'name', [nodeHash]);
   }
   
@@ -272,7 +272,7 @@ export default class Ens implements NamingService {
   private async getResolverContract(
     domain: string,
     coinType?: string,
-  ): Promise<Contract> {
+  ): Promise<EthereumContract> {
     const resolverAddress = await this.resolver(domain);
     return buildContract(
       resolverInterface(resolverAddress, coinType),
@@ -282,7 +282,7 @@ export default class Ens implements NamingService {
   }
 
   private async callMethod(
-    contract: Contract,
+    contract: EthereumContract,
     method: string,
     params: (string | string[])[],
   ): Promise<any> {

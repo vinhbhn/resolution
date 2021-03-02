@@ -14,12 +14,6 @@ export type NetworkIdMap = {
   [key: number]: string;
 };
 
-export type ProxyData = {
-  owner: string,
-  resolver: string,
-  values: string[]
-}
-
 export type ProviderParams = unknown[] | object;
 export interface RequestArguments {
   method: string;
@@ -132,7 +126,7 @@ const StringUnion = <UnionType extends string>(...values: UnionType[]) => {
   const unionNamespace = {guard, check, values};
   return Object.freeze(unionNamespace as typeof unionNamespace & {type: UnionType});
 };
-
+// todo check tests
 export const CnsSupportedNetwork = StringUnion("mainnet", "rinkeby") 
 export const EnsSupportedNetwork = StringUnion("mainnet", "rinkeby", "goerli", "ropsten") 
 export const ZnsSupportedNetwork = StringUnion("mainnet") 

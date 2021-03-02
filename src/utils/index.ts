@@ -2,7 +2,7 @@ import ConfigurationError, { ConfigurationErrorCode } from '../errors/configurat
 import ResolutionError, { ResolutionErrorCode } from '../errors/resolutionError';
 import { CryptoRecords, TickerVersion, EnsSupportedNetworks, CnsSupportedNetworks, Provider, ZnsSupportedNetworks, NamingServiceName } from '../publicTypes';
 import { isCnsSupportedNetworks, NullAddresses, isEnsSupportedNetworks, isZnsSupportedNetworks } from '../types';
-import Contract from './contract';
+import EthereumContract from '../contracts/EthereumContract';
 
 /**
  * Parses object in format { "key.key2.key3" : value } into { key: { key2: {key3: value } } }
@@ -85,7 +85,7 @@ export function hexToBytes(hexString: string): number[] {
 const CRYPTO_RESOLVER_ADVANCED_EVENTS_STARTING_BLOCK = '0x960844';
 
 export async function getStartingBlock(
-  contract: Contract,
+  contract: EthereumContract,
   tokenId: string,
 ): Promise<string> {
   const logs = await contract.fetchLogs('ResetRecords', tokenId);
@@ -151,8 +151,8 @@ export function ensureConfigured(source: {
   }
 }
 
-export function buildContract(abi: any, address: string, provider: Provider): Contract {
-  return new Contract(abi, address, provider);
+export function buildContract(abi: any, address: string, provider: Provider): EthereumContract {
+  return new EthereumContract(abi, address, provider);
 }
 
 export function  ensureRecordPresence(

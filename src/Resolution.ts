@@ -177,10 +177,10 @@ export default class Resolution {
    * @throws [[ResolutionError]] if address is not found
    * @returns A promise that resolves in an address
    */
-  async addr(domain: string, currrencyTicker: string): Promise<string> {
+  async addr(domain: string, currencyTicker: string): Promise<string> {
     return await this.record(
       domain,
-      `crypto.${currrencyTicker.toUpperCase()}.address`,
+      `crypto.${currencyTicker.toUpperCase()}.address`,
     );
   }
 
@@ -195,7 +195,7 @@ export default class Resolution {
   async usdt(domain: string, version: TickerVersion): Promise<string> {
     domain = this.prepareDomain(domain);
     const method = this.getNamingMethodOrThrow(domain);
-    if (method.name === NamingServiceName.ENS) {
+    if (method.serviceName(domain) === NamingServiceName.ENS) {
       throw new ResolutionError(ResolutionErrorCode.UnsupportedMethod, {
         methodName: NamingServiceName.ENS,
         domain,

@@ -3,7 +3,7 @@ import { keccak_256 as sha3 } from 'js-sha3';
 import { default as proxyReaderAbi } from './contracts/cns/proxyReader';
 import { default as resolverInterface } from './contracts/cns/resolver';
 import ResolutionError, { ResolutionErrorCode } from './errors/resolutionError';
-import Contract from './utils/contract';
+import EthereumContract from './contracts/EthereumContract';
 import standardKeys from './utils/standardKeys';
 import { 
   buildContract,
@@ -51,7 +51,7 @@ export default class Cns implements NamingService {
   readonly network: number;
   readonly url: string | undefined;
   readonly provider: Provider;
-  readonly readerContract: Contract;
+  readonly readerContract: EthereumContract;
 
   constructor(source?: CnsConfig) {
     if (!source) {
@@ -202,7 +202,7 @@ export default class Cns implements NamingService {
   }
 
   private async getAllRecords(
-    resolverContract: Contract,
+    resolverContract: EthereumContract,
     tokenId: string,
   ): Promise<CryptoRecords> {
     const startingBlock = await getStartingBlock(resolverContract, tokenId);
